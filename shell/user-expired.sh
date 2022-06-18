@@ -7,5 +7,9 @@ arr=(
   )
 
 for str in ${arr[@]};do
-    res=`sshpass -p userpass ssh user@$str chage -M 99999 user`
+    res=`sshpass -p pass ssh user@$str chage -l user`
+    arr=(${res//:/ })
+    expired=${arr[-10]}
+    echo "$str : $expired"
 done
+echo "check over"
