@@ -1,0 +1,19 @@
+# 文档地址
+https://kubernetes.io/zh-cn/docs/reference/kubectl/kubectl
+
+# 列表地址
+https://imroc.cc/kubernetes/appendix/kubectl-cheat-sheet.html
+
+# 清理evicted pod
+kubectl get pod -o wide --all-namespaces | awk '{if($4=="Evicted"){cmd="kubectl -n "$1" delete pod "$2; system(cmd)}}'
+
+# 清理非Running的pod
+kubectl get pod -o wide --all-namespaces | awk '{if($4!="Running"){cmd="kubectl -n "$1" delete pod "$2; system(cmd)}}'
+
+# 获取目标节点数量
+kubectl get node -l light-cluster=PRODUCT,tencent.cr/deviceClass=S5T.12XLARGE128 | wc -l
+
+# 只获取节点ip
+kubectl get node  -l light-cluster=PRODUCT,tencent.cr/deviceClass=S5T.12XLARGE128 -o custom-columns=NAME:.metadata.name,RSRC:.metadata.resourceVersion
+
+
