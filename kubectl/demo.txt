@@ -1,12 +1,18 @@
 # 文档地址
 https://kubernetes.io/zh-cn/docs/reference/kubectl/kubectl
 
-# 设置标签
-kubectl label node 11.177.83.208 light-cluster=EXPERIENCE --overwrite
-kubectl taint node 11.177.83.208 light-cluster='EXPERIENCE:NoExecute'
+# 设置/删除标签
+kubectl label node node_ip light-cluster=EXPERIENCE --overwrite
+kubectl label node node_ip light-cluster-
 
-# 删除标签
-kubectl label node 9.219.91.174 light-cluster-
+# 设置/删除污点
+kubectl taint node node_ip app_id='10024-2577:NoExecute'
+kubectl taint node node_ip app_id-
+// effect值
+NoSchedule: 不把pod调度到污点节点
+PreferNoSchedule: 尽量不把pod调度到污点节点
+NoExecute: 不把pod调度到污点节点, 并且将已经运行的非容忍pod驱逐到别的节点
+
 
 # 列表地址
 https://imroc.cc/kubernetes/appendix/kubectl-cheat-sheet.html
