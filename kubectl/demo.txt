@@ -1,6 +1,13 @@
 # 文档地址
 https://kubernetes.io/zh-cn/docs/reference/kubectl/kubectl
 
+# 设置标签
+kubectl label node 11.177.83.208 light-cluster=EXPERIENCE --overwrite
+kubectl taint node 11.177.83.208 light-cluster='EXPERIENCE:NoExecute'
+
+# 删除标签
+kubectl label node 9.219.91.174 light-cluster-
+
 # 列表地址
 https://imroc.cc/kubernetes/appendix/kubectl-cheat-sheet.html
 
@@ -11,9 +18,16 @@ kubectl get pod -o wide --all-namespaces | awk '{if($4=="Evicted"){cmd="kubectl 
 kubectl get pod -o wide --all-namespaces | awk '{if($4!="Running"){cmd="kubectl -n "$1" delete pod "$2; system(cmd)}}'
 
 # 获取目标节点数量
-kubectl get node -l light-cluster=PRODUCT,tencent.cr/deviceClass=S5T.12XLARGE128 | wc -l
+kubectl get node -l light-cluster=PRODUCT,tencent.cr/deviceClass=SA3.2XLARGE16 | wc -l
+kubectl get node -l light-cluster=PRODUCT,tencent.cr/deviceClass=S5.8XLARGE128 | wc -l
+kubectl get node -l light-cluster=PRODUCT,tencent.cr/deviceClass=S5.12XLARGE128 | wc -l
+kubectl get node -l light=sys | wc -l
+
+# 删除指定状态的pod
+kubectl get pods -n <Namespace> | grep Evicted | awk '{print $1}' | xargs kubectl delete pod -n <Namespace>
+kubectl get pod -n app-product -l app_id=10024,game_id=2577 | grep OutOfcpu | awk '{print $1}' | xargs kubectl delete pod -n app-product
 
 # 只获取节点ip
-kubectl get node  -l light-cluster=PRODUCT,tencent.cr/deviceClass=S5T.12XLARGE128 -o custom-columns=NAME:.metadata.name,RSRC:.metadata.resourceVersion
-
-
+kubectl get node  -l light-cluster=PRODUCT,tencent.cr/deviceClass=S5.8XLARGE128 -o custom-columns=NAME:.metadata.name,RSRC:.metadata.resourceVersion
+kubectl get node  -l light-cluster=PRODUCT,tencent.cr/deviceClass=S5.8XLARGE128 -o custom-columns=NAME:.metadata.name >> s52.txt
+kubectl get node  -l light-cluster=PRODUCT,tencent.cr/deviceClass=S5.12XLARGE128 -o custom-columns=NAME:.metadata.name >> a.txt
