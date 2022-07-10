@@ -13,6 +13,8 @@ NoSchedule: 不把pod调度到污点节点
 PreferNoSchedule: 尽量不把pod调度到污点节点
 NoExecute: 不把pod调度到污点节点, 并且将已经运行的非容忍pod驱逐到别的节点
 
+# 查看资源列表(做k8s二开的时候查看当前版本支持的资源版本)
+kubectl api-resources | grep resource
 
 # 列表地址
 https://imroc.cc/kubernetes/appendix/kubectl-cheat-sheet.html

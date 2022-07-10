@@ -1,0 +1,14 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: 10024-23-7-1001
+  namespace: default
+spec:
+  minReplicas: 1
+  maxReplicas: 10
+  # v1仅支持cpu targetCPUUtilizationPercentage只有v1才支持
+  targetCPUUtilizationPercentage: 60
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: php-apache

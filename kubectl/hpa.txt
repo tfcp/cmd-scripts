@@ -1,0 +1,21 @@
+# HPA
+## 1. k8s版本区别
+v1版本    1.5+   只支持cpu
+v2beta1  1.6+   支持mem,自定义
+
+## 2. 查看支持版本
+kubectl api-versions | grep autoscaling
+kubectl api-resources | grep hpa
+
+## 3. hpa区别
+autoscaling/v1  :  只支持cpu
+autoscaling/v2beta1 : 支持Resource Metrics（资源指标，如pod的CPU）和Custom Metrics（自定义指标）的缩放；
+autoscaling/v2beta2 : 支持Resource Metrics（资源指标，如pod的CPU）和Custom Metrics（自定义指标）和ExternalMetrics（额外指标）的缩放。
+
+## 4. 细节
+缩容默认5分钟一波
+扩容默认3分钟一波
+相关配置由kube-controller-manager --horizontal-pod-autoscaler-downscale-stabilization-window控制
+
+1.18在v2beta2 版本上新增了扩缩容灵敏度的控制 不过版本号依然保持 v2beta2 不变
+
