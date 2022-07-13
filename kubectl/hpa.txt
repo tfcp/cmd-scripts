@@ -2,6 +2,7 @@
 ## 1. k8s版本区别
 v1版本    1.5+   只支持cpu
 v2beta1  1.6+   支持mem,自定义
+v2beta2  1.18+  支持了behavior关键字 可以自定义相关指标
 
 ## 2. 查看支持版本
 kubectl api-versions | grep autoscaling
@@ -12,10 +13,32 @@ autoscaling/v1  :  只支持cpu
 autoscaling/v2beta1 : 支持Resource Metrics（资源指标，如pod的CPU）和Custom Metrics（自定义指标）的缩放；
 autoscaling/v2beta2 : 支持Resource Metrics（资源指标，如pod的CPU）和Custom Metrics（自定义指标）和ExternalMetrics（额外指标）的缩放。
 
-## 4. 细节
+## 4. 默认参数
 缩容默认5分钟一波
 扩容默认3分钟一波
+扩容幅度
+缩容幅度
 相关配置由kube-controller-manager --horizontal-pod-autoscaler-downscale-stabilization-window控制
 
 1.18在v2beta2 版本上新增了扩缩容灵敏度的控制 不过版本号依然保持 v2beta2 不变
+
+## 5. 相关知识点
+HPA Conditions
+AbleToScale：表明HPA是否 可以获取和更新伸缩信息，以及是否存在阻止伸缩的各种回退条件
+ScalingActive：表明HPA是否被启用（即目标的副本数量不为零） 以及是否能够完成伸缩计算。当这一状态为False时，通常表明获取度量指标存在问题。
+ScalingLimitted：表明所需伸缩的值被HorizontalPodAutoscaler所定义的最大或者最小值所限制（即已经达到最大或者最小伸缩值）。这通常表明您可能需要调整HorizontalPodAutoscaler 所定义的最大或者最小副本数量的限制了。
+
+
+## 5. HPA问题
+1. 监控告警不完善
+2. 对于资源的节省本质没有太多帮助
+3. 比较简陋 需要大量兼容开发
+4. 需要考虑资源扩不动怎么办
+5. 默认的hpa是机遇平均负载计算的 对于负载不均衡的场景是无法解决的
+6. 对于扩缩容有精细化需求比较难搞 (扩缩容的时间控制(时间间隔 时间段) 扩缩容的幅度控制 )
+
+## 6. 二开思路
+如果是1.18之后可以根据behavior来自定义 之前的版本需要自己想办法
+1. 如果想让hpa只在特定场景生效 (比如凌晨2点-4点才缩容)
+    可以搞一个定时任务 定时去更新hpa策略
 
