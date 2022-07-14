@@ -28,6 +28,10 @@ AbleToScale：表明HPA是否 可以获取和更新伸缩信息，以及是否�
 ScalingActive：表明HPA是否被启用（即目标的副本数量不为零） 以及是否能够完成伸缩计算。当这一状态为False时，通常表明获取度量指标存在问题。
 ScalingLimitted：表明所需伸缩的值被HorizontalPodAutoscaler所定义的最大或者最小值所限制（即已经达到最大或者最小伸缩值）。这通常表明您可能需要调整HorizontalPodAutoscaler 所定义的最大或者最小副本数量的限制了。
 
+实现hpa条件:
+1. daemonset不能走hpa
+2. 资源必须设置request
+
 
 ## 5. HPA问题
 1. 监控告警不完善
@@ -36,9 +40,14 @@ ScalingLimitted：表明所需伸缩的值被HorizontalPodAutoscaler所定义的
 4. 需要考虑资源扩不动怎么办
 5. 默认的hpa是机遇平均负载计算的 对于负载不均衡的场景是无法解决的
 6. 对于扩缩容有精细化需求比较难搞 (扩缩容的时间控制(时间间隔 时间段) 扩缩容的幅度控制 )
+7. 指标毛刺 带来的实例数抖动
 
 ## 6. 二开思路
 如果是1.18之后可以根据behavior来自定义 之前的版本需要自己想办法
 1. 如果想让hpa只在特定场景生效 (比如凌晨2点-4点才缩容)
     可以搞一个定时任务 定时去更新hpa策略
+
+## 7. 备注
+智能hpa开源项目
+https://github.com/gocrane/crane/
 
